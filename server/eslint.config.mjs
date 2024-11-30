@@ -11,7 +11,7 @@ export default [
       "build/",
       "coverage/",
       "*.min.js",
-      "*.bundle.js"
+      "*.bundle.js",
     ],
   },
   {

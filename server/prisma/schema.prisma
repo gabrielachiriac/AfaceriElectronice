@@ -34,8 +34,11 @@ model Profile {
 model User {
   id      Int      @id @default(autoincrement())
   email   String   @unique
-  name    String?
+  name    String
+  password String
+  createdAt      DateTime         @default(now()) @map("created_at")
+  updatedAt      DateTime         @updatedAt @map("updated_at")
+
   posts   Post[]
   profile Profile?
-  age    Int?
 }
