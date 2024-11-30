@@ -1,31 +1,37 @@
 import { useState } from "react";
-import { loginUser } from "../routes/auth";
 import { toast } from "react-toastify";
+import { registerUser } from "../routes/user";
 import { useNavigate } from "react-router-dom";
 
-function Login() {
+const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
 
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
-    const response = await loginUser(email, password);
+  const handleRegister = async () => {
+    const response = await registerUser(name, email, password);
 
     if (response.success) {
-      localStorage.setItem("token", response.data.token);
-      window.location.href = "/";
+      navigate("/login");
+      toast.success("User registered successfully");
     } else {
-        toast.error('Invalid credentials');
+      toast.error("Invalid credentials");
     }
   };
 
-  const handleRegister = async () => {
-    navigate("/register");
-  }
-
   return (
     <div className="formWrapper">
+      <label htmlFor="name">Name</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        placeholder="Your name.."
+        onChange={(e) => setName(e.target.value)}
+      />
+
       <label htmlFor="email">Email</label>
       <input
         type="text"
@@ -43,16 +49,13 @@ function Login() {
         onChange={(e) => setPassword(e.target.value)}
       />
 
-      <div className='loginButtonsWrapper'>
-        <button type="submit" onClick={handleLogin}>
+      <div>
+        <button type="submit" onClick={handleRegister}>
           Submit
-        </button>
-        <button onClick={handleRegister}>
-          Register
         </button>
       </div>
     </div>
   );
-}
+};
 
-export default Login;
+export default Register;

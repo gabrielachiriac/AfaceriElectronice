@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
+import { getApiUrl } from "../utils/envUtils";
 
 export const loginUser = async (email, password) => {
   const options = {
@@ -9,7 +9,7 @@ export const loginUser = async (email, password) => {
     body: JSON.stringify({ email, password }),
   };
 
-  const result = await fetch(`${API_URL}/auth/login`, options);
+  const result = await fetch(`${getApiUrl()}/auth/login`, options);
   const response = await result.json();
   return response;
 };

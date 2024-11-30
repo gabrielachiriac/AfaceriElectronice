@@ -5,6 +5,7 @@ import useCheckToken from "./hooks/useCheckToken";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import { useSelector } from "react-redux";
+import Register from "./pages/Register";
 
 function App() {
   const {checkTokenLoading, loggedIn} = useSelector((state) => state.global);
@@ -21,6 +22,7 @@ function App() {
           <>
             <Route path="/" element={<Homepage />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
             <Route
               path="/profile"
               element={loggedIn ? <Profile /> : <Navigate to="/login" />}
