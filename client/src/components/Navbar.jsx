@@ -1,10 +1,13 @@
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { setLoggedIn } from "../store/slices/globalSlice";
 
-function Navbar(props) {
-  const { loggedIn, setLoggedIn } = props;
+function Navbar() {
+  const {loggedIn} = useSelector((state) => state.global);
+  const dispatch = useDispatch();
 
   const logoutUser = () => {
-    setLoggedIn(false);
+    dispatch(setLoggedIn(false));
     localStorage.removeItem("token");
   };
 

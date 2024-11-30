@@ -1,22 +1,21 @@
-import { useState } from "react";
 import { Navigate, Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Homepage from "./pages/Homepage";
 import Navbar from "./components/Navbar";
 import useCheckToken from "./hooks/useCheckToken";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
+import { useSelector } from "react-redux";
 
 function App() {
-  const [loading, setLoading] = useState(true);
-  const [loggedIn, setLoggedIn] = useState(false);
+  const {checkTokenLoading, loggedIn} = useSelector((state) => state.global);
 
-  useCheckToken(setLoading, setLoggedIn);
+  useCheckToken();
 
   return (
     <Router>
-      <Navbar loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
+      <Navbar />
       <Routes>
-        {loading ? (
+        {checkTokenLoading ? (
           <Route path="*" element={<div>Spinner</div>} />
         ) : (
           <>

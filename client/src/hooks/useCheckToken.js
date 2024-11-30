@@ -1,7 +1,11 @@
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setCheckTokenLoading, setLoggedIn, setToken } from "../store/slices/globalSlice";
 const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
 
-function useCheckToken(setLoading, setLoggedIn) {
+function useCheckToken() {
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const token = localStorage.getItem("token");
 
@@ -18,7 +22,8 @@ function useCheckToken(setLoading, setLoggedIn) {
         .then((res) => res.json())
         .then((res) => {
           if (res.success) {
-            setLoggedIn(true);
+            dispatch(setLoggedIn(true));
+            dispatch(setToken(res.data.token))
           }
         })
         .catch(() => {
@@ -26,10 +31,10 @@ function useCheckToken(setLoading, setLoggedIn) {
           window.location.href = "/login";
         })
         .finally(() => {
-          setLoading(false);
+          dispatch(setCheckTokenLoading(false));
         });
     } else {
-      setLoading(false);
+      dispatch(setCheckTokenLoading(false));
     }
   }, []);
 }
