@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setCheckTokenLoading, setLoggedIn, setToken } from "../store/slices/globalSlice";
-const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
+import { getApiUrl } from "../utils/envUtils";
 
 function useCheckToken() {
   const dispatch = useDispatch();
@@ -18,12 +18,15 @@ function useCheckToken() {
         body: JSON.stringify({ token }),
       };
 
-      fetch(`${API_URL}/auth/check`, options)
+      fetch(`${getApiUrl()}/auth/check`, options)
         .then((res) => res.json())
         .then((res) => {
           if (res.success) {
             dispatch(setLoggedIn(true));
             dispatch(setToken(res.data.token))
+          } else {
+            localStorage.removeItem("token");
+            window.location.href = "/login";
           }
         })
         .catch(() => {
