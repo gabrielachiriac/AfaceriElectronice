@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const morgan = require("morgan");
 const userRoutes = require("./routes/user.routes");
 const authRoutes = require("./routes/auth.routes");
 
@@ -9,6 +10,7 @@ dotenv.config();
 
 const PORT = process.env.PORT || 3001;
 
+app.use(morgan("dev"));
 app.use(
   cors(),
   //   {
