@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import { getProducts } from "../routes/products";
+import { addToCart, updateCart } from "../store/slices/cartSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const Products = (props) => {
   const { filters, sorting } = props;
+  const { cart } = useSelector((state) => state.cart);
   const [products, setProducts] = useState([]);
+  const dispatch = useDispatch();
 
   const handleGetProducts = async () => {
     try {
@@ -27,6 +31,23 @@ const Products = (props) => {
     return stars;
   };
 
+  const addProductToCart = (product) => {
+    const existingProduct = cart.find((item) => item.id === product.id);
+
+    if (existingProduct) {
+      dispatch(
+        updateCart({
+          id: product.id,
+          name: product.title,
+          img: product.thumbnail,
+          quantity: existingProduct.quantity + 1,
+        })
+      );
+    } else {
+      dispatch(addToCart({ ...product, quantity: 1 }));
+    }
+  };
+
   useEffect(() => {
     handleGetProducts();
   }, [filters, sorting]);
@@ -47,7 +68,7 @@ const Products = (props) => {
           <div className="price-cart">
             <p className="price">${product.price.toFixed(2)}</p>
             <div>
-              <button className="add-to-cart">
+              <button className="add-to-cart" onClick={() => addProductToCart(product)}>
                 <i className="fas fa-shopping-cart"></i>
               </button>
             </div>

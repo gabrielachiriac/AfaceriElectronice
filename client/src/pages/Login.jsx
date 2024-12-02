@@ -2,11 +2,13 @@ import { useState } from "react";
 import { loginUser } from "../routes/auth";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setLoggedIn, setToken } from "../store/slices/globalSlice";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogin = async () => {
@@ -14,7 +16,9 @@ function Login() {
 
     if (response.success) {
       localStorage.setItem("token", response.data.token);
-      window.location.href = "/";
+      navigate("/");
+      dispatch(setLoggedIn(true));
+      dispatch(setToken(response.data.token));
     } else {
         toast.error('Invalid credentials');
     }

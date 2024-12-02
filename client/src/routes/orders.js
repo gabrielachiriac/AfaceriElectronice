@@ -1,15 +1,16 @@
 import { getApiUrl } from "../utils/envUtils";
 
-export const registerUser = async (name, email, password) => {
+export const createOrder = async (payload, token) => {
   const options = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ name, email, password }),
+    body: JSON.stringify(payload),
   };
 
-  const result = await fetch(`${getApiUrl()}/users`, options);
+  const result = await fetch(`${getApiUrl()}/orders/create`, options);
   const response = await result.json();
   return response;
 };

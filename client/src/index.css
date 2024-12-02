@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 * {
     margin: 0;
     padding: 0;
@@ -95,7 +99,7 @@ input[type=text], input[type=password] {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 360px;
+    height: 400px;
   }
   
   .product-card img {
@@ -151,4 +155,87 @@ input[type=text], input[type=password] {
 
   .add-to-cart:hover {
     background-color: rgba(0, 139, 139, 0.9);
+  }
+
+  .cart-container {
+    margin: 16px;
+    border: 1px solid #ddd;
+    padding: 16px;
+    border-radius: 8px;
+    display: flex;
+    gap: 16px;
+  }
+
+  .cart-items {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 75%;
+  }
+
+  .cart-info {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 50%;
+    border: 1px solid #ddd;
+    padding: 16px;
+    border-radius: 8px;
+  }
+
+  .cart-item {
+    display: flex;
+    gap: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+  }
+
+  .cart-item img {
+    max-width: 150px; /* Adjust the width as needed */
+    height: auto;
+    object-fit: contain;
+  }
+
+  .cart-item-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .cart-item-buttons {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+
+  .cart-item-buttons button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 30px;
+  }
+
+  .cart-total {
+    text-align: right;
+  }
+
+  .cart-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: flex-end;
+  }
+
+  .cart-button{
+    width: fit-content;
+    text-transform: uppercase;
+    background-color: #007bff;
+  }
+
+  .cart-summary {
+    padding: 16px;
   }
