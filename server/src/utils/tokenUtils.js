@@ -26,7 +26,6 @@ const generateToken = id => {
 const verifyToken = (req, res, next) => {
   const bearerHeader = req.headers["authorization"];
   const token = bearerHeader?.split(" ")[1];
-
   if (!token) {
     return res.status(401).json({
       success: false,
@@ -35,7 +34,7 @@ const verifyToken = (req, res, next) => {
     });
   }
 
-  jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
+  jwt.verify(token, JWT_SECRET, (err, decoded) => {
     if (err) {
       return res.status(401).json({
         success: false,
