@@ -28,7 +28,8 @@ const Cart = () => {
   };
 
   const handleSubmit = async () => {
-    if (!token) {
+    const reqToken = localStorage.getItem('token');
+    if (!reqToken) {
       toast.error("You need to be logged in to checkout");
       return;
     }
