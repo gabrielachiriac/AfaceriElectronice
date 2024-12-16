@@ -6,6 +6,7 @@ import {
 } from "../store/slices/cartSlice";
 import { useState } from "react";
 import { createOrder } from "../routes/orders";
+import { createPayment } from "../routes/payments";
 import { toast } from "react-toastify";
 
 const Cart = () => {
@@ -40,14 +41,12 @@ const Cart = () => {
     console.log(response);
 
     if (response.success) {
-      const orderDetails = {
-        orderId: response.data.id,
-        total: response.data.total,
-      };
-
-    } else {
-        toast.error("Failed to create order")
-      };
+      const paymentResponse = await createPayment(response.data.id,  parseFloat(total), token);
+      console.log(paymentResponse);
+    }
+    else {
+      toast.error("Failed to create order")
+    }
   };
 
   const handleQuantityChange = (product, quantity) => {

@@ -14,19 +14,30 @@ model User {
   createdAt DateTime @default(now()) @map("created_at")
   password  String
   updatedAt DateTime @updatedAt @map("updated_at")
-  orders    Order[]
+  orders    Order[]  @relation("UserOrder")
 }
 
 model Order {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   total     Float
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
   userId    Int
   address   String
   city      String
   name      String
   phone     String
   status    String
-  user      User     @relation(fields: [userId], references: [id])
+  user      User      @relation("UserOrder", fields: [userId], references: [id])
+  payment   Payment?  @relation("OrderPayment")
+}
+
+model Payment {
+  id           Int      @id @default(autoincrement())
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+  orderId      Int      @unique
+  total        Float
+  status       String
+  order        Order    @relation("OrderPayment", fields: [orderId], references: [id])
 }

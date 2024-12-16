@@ -5,6 +5,7 @@ const morgan = require("morgan");
 const userRoutes = require("./routes/user.routes");
 const authRoutes = require("./routes/auth.routes");
 const orderRoutes = require("./routes/order.routes");
+const paymentRoutes = require("./routes/payment.routes");
 const { verifyToken } = require("./utils/tokenUtils");
 
 const app = express();
@@ -24,6 +25,7 @@ app.use(express.json());
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/orders", verifyToken, orderRoutes);
+app.use("/payments", verifyToken, paymentRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://127.0.0.1:${PORT}`);
