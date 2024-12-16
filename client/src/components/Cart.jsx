@@ -38,6 +38,16 @@ const Cart = () => {
 
     const response = await createOrder({ ...formData, total }, token);
     console.log(response);
+
+    if (response.success) {
+      const orderDetails = {
+        orderId: response.data.id,
+        total: response.data.total,
+      };
+
+    } else {
+        toast.error("Failed to create order")
+      };
   };
 
   const handleQuantityChange = (product, quantity) => {
