@@ -7,6 +7,8 @@ import Profile from "./pages/Profile";
 import { useSelector } from "react-redux";
 import Register from "./pages/Register";
 import Cart from "./components/Cart";
+import CheckoutSuccess from "./components/CheckoutSuccess";
+import CheckoutFail from "./components/CheckoutFail";
 
 function App() {
   const {checkTokenLoading, loggedIn} = useSelector((state) => state.global);
@@ -25,6 +27,8 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/checkout-success" element={<CheckoutSuccess />} />
+            <Route path="/checkout-fail" element={<CheckoutFail />} />
             <Route
               path="/profile"
               element={loggedIn ? <Profile /> : <Navigate to="/login" />}

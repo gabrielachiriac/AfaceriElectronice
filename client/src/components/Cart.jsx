@@ -9,6 +9,7 @@ import { createOrder } from "../routes/orders";
 import { createPayment } from "../routes/payments";
 import { toast } from "react-toastify";
 
+
 const Cart = () => {
   const { token } = useSelector((state) => state.global);
   const { cart } = useSelector((state) => state.cart);
@@ -43,7 +44,8 @@ const Cart = () => {
     if (response.success) {
       const paymentResponse = await createPayment(response.data.id,  parseFloat(total), token);
       console.log(paymentResponse);
-    }
+      toast.success("Your order have been created")
+      }
     else {
       toast.error("Failed to create order")
     }
@@ -65,6 +67,10 @@ const Cart = () => {
 
   const handleClearCart = () => {
     dispatch(clearCart());
+  };
+
+  const handleCheckout = async () => {
+
   };
 
   return (
@@ -178,6 +184,9 @@ const Cart = () => {
             Clear Cart
           </button>
           <button className="cart-button" onClick={handleSubmit}>
+            Save Order
+          </button>
+          <button className="cart-button" onClick={handleCheckout}>
             Checkout
           </button>
         </div>
