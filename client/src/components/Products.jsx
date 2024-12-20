@@ -3,9 +3,6 @@ import { getProducts } from "../routes/products";
 import { addToCart, updateCart } from "../store/slices/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
 
-import { toast } from "react-toastify"; 
-import 'react-toastify/dist/ReactToastify.css';
-
 
 const Products = (props) => {
   const { filters, sorting } = props;
