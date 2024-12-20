@@ -53,6 +53,17 @@ const Products = (props) => {
   }, [filters, sorting]);
 
   return (
+    <div>
+    <div
+        className="absolute top-0 left-0 w-full h-full"
+        style={{
+          backgroundImage: 'url("https://cdn-icons-png.flaticon.com/512/6680/6680292.png")',
+         // backgroundSize: "cover",
+          backgroundPosition: "center",
+          opacity: "0.15",
+          zIndex: -1,
+        }}
+    />
     <div className="products-container">
       {products?.map((product) => (
         <div key={product.id} className="product-card">
@@ -75,6 +86,7 @@ const Products = (props) => {
           </div>
         </div>
       ))}
+    </div>
     </div>
   );
 };

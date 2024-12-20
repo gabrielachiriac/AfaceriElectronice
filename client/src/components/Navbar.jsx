@@ -18,6 +18,8 @@ function Navbar() {
 
   return (
     <div className="navbarWrapper">
+      <h1 className="navbarTitle">Welcome to my shop!</h1>
+
       <Link to="/">Homepage</Link>
 
       {loggedIn ? (

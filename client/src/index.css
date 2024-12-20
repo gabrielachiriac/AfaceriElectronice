@@ -20,8 +20,14 @@
     border: 1px solid #ddd;
     padding: 5px;
     text-decoration: none;
-    background-color: darkcyan;
+    background-color: #ff8800;
     color: white;
+}
+
+.navbarTitle {
+  font-size: 24px;
+  color: #ff8800; /* Portocaliu */
+  font-weight: bold;
 }
 
 input[type=text], input[type=password] {
@@ -35,7 +41,7 @@ input[type=text], input[type=password] {
 
   button {
     width: 50%;
-    background-color: darkcyan;
+    background-color: #ff8800;
     color: white;
     padding: 14px 20px;
     margin: 8px 0;
@@ -233,7 +239,7 @@ input[type=text], input[type=password] {
   .cart-button{
     width: fit-content;
     text-transform: uppercase;
-    background-color: #007bff;
+    background-color: #6f00ff;
   }
 
   .cart-summary {

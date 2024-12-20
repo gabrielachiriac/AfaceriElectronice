@@ -1,42 +1,41 @@
-import Stripe from "stripe";
 const express = require("express");
+const Stripe = require("stripe");
+
 const dotenv = require("dotenv");
 dotenv.config();
 
+const stripe = Stripe(process.env.STRIPE_SECRET_KEY); // Cheia secreta Stripe
 const router = express.Router();
 
-const stripeSecret = process.env.STIPRE_PRIVATE_KEY;
+router.post("/create-checkout-session", async (req, res) => {
+  const { product } = req.body; // Extragem produsele din body
 
-router.post('/api/checkout', async (req, res) => {
-    const stripe = new Stripe(stripeSecret);
-
-    try{
-      const products = req.body.products;
-
-      const extractProducts = await products.map((product) => ({
-        quantity: product.quntity,
+  try {
+    // Crearea unei sesiuni de checkout Stripe
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      line_items: product.map((item) => ({
         price_data: {
           currency: "usd",
-          unit_amount: product.price*100,
-          product_data:{
-            name: product.title,
-            image: product.thumbnail,
+          product_data: {
+            name: item.title,
+            images: [item.thumbnail],
           },
+          unit_amount: Math.round(item.price * 100),
         },
-      }));
+        quantity: item.quantity,
+      })),
+      mode: "payment",
+      success_url: `${process.env.CLIENT_URL}/checkout-success`,
+      cancel_url: `${process.env.CLIENT_URL}/checkout-fail`,
+    });
 
-      const session = await stripe.checkout.sessions.create({
-        payment_method_types: ["card"],
-        line_items: extractProducts,
-        mode: 'payment',
-        success_url: `${process.env.CLIENT_URL}/checkout-success`,
-        cancel_url: `${process.env.CLIENT_URL}/checkout-fail`,
-      });
+    res.json({ id: session.id });
+    res.redirect(303, session.url);
+  } catch (error) {
+    console.error("Error creating checkout session:", error);
+    res.status(500).json({ error: "Error creating checkout session." });
+  }
+});
 
-      res.json({id: session.id });
-    } catch (error) {
-      res.status(500).json({ error:error });
-    }
-  });
-  //    res.send({url: session.url});
-  export default router;
+module.exports = router;

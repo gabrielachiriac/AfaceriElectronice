@@ -9,6 +9,8 @@ import { createOrder } from "../routes/orders";
 import { createPayment } from "../routes/payments";
 import { toast } from "react-toastify";
 
+import { loadStripe } from "@stripe/stripe-js";
+
 
 const Cart = () => {
   const { token } = useSelector((state) => state.global);
@@ -33,6 +35,11 @@ const Cart = () => {
     const reqToken = localStorage.getItem('token');
     if (!reqToken) {
       toast.error("You need to be logged in to checkout");
+      return;
+    }
+
+    if (cart.length === 0) {
+      toast.error("Empty cart - please add products!");
       return;
     }
 
@@ -70,11 +77,50 @@ const Cart = () => {
   };
 
   const handleCheckout = async () => {
-
+    const stripe = await loadStripe("pk_test_51QW5nG06HzX9wc56cjJrhbNEOFEDXCFQsR5OOgWxfMuyaDZ6ayvPPrDeW8e4OwrvMrmKRooJf1TA9dUo80ZPAUfq00pttpdunT");
+  
+    const body = {
+      product: cart
+    };
+  
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    };
+  
+    const response = await fetch(`http://localhost:3000/create-checkout-session`, {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(body)
+    });
+  
+    if (response.ok) {
+      const session = await response.json();
+      const result = await stripe.redirectToCheckout({
+        sessionId: session.id
+      });
+  
+      if (result.error) {
+        console.error(result.error);
+      }
+    } else {
+      console.error("Failed to create checkout session");
+    }
   };
-
+  
+  
   return (
     <div>
+      <div
+        className="absolute top-0 left-0 w-full h-full"
+        style={{
+          backgroundImage: 'url("https://cdn-icons-png.flaticon.com/512/6680/6680292.png")',
+         // backgroundSize: "cover",
+          backgroundPosition: "center",
+          opacity: "0.15",
+          zIndex: -1,
+        }}
+      />
       <div className="cart-container">
         <div className="w-1/4 flex flex-col justify-center">
           <label
@@ -175,21 +221,22 @@ const Cart = () => {
           ))}
         </div>
       </div>
-      <div className="cart-summary">
-        <div className="cart-total">
+      <div className="cart-summary flex justify-center mt-6">
+        <div className="cart-total font-bold text-2xl">
           <h3>Total: ${cartTotal()}</h3>
         </div>
-        <div className="cart-buttons">
-          <button className="cart-button" onClick={handleClearCart}>
-            Clear Cart
-          </button>
-          <button className="cart-button" onClick={handleSubmit}>
-            Save Order
-          </button>
-          <button className="cart-button" onClick={handleCheckout}>
-            Checkout
-          </button>
-        </div>
+      </div>
+
+      <div className="cart-buttons flex justify-between mt-6">
+        <button className="cart-button" onClick={handleClearCart}>
+          Clear Cart
+        </button>
+        <button className="cart-button" onClick={handleSubmit}>
+          Save Order
+        </button>
+        <button className="cart-button" onClick={handleCheckout}>
+          Checkout
+        </button>
       </div>
     </div>
   );
