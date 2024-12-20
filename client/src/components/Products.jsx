@@ -3,7 +3,7 @@ import { getProducts } from "../routes/products";
 import { addToCart, updateCart } from "../store/slices/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
 
-import { toast, ToastContainer } from "react-toastify"; 
+import { toast } from "react-toastify"; 
 import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -38,7 +38,7 @@ const Products = (props) => {
   const addProductToCart = (product) => {
 
     if (product.availabilityStatus === "Out of Stock") {
-      toast.error("This product is out of stock and cannot be added to the cart");
+      //toast.error("This product is out of stock and cannot be added to the cart");
       return;
     }
 
@@ -64,7 +64,6 @@ const Products = (props) => {
 
   return (
     <div>
-      <ToastContainer />
     <div
         className="absolute top-0 left-0 w-full h-full"
         style={{
