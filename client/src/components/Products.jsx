@@ -3,6 +3,10 @@ import { getProducts } from "../routes/products";
 import { addToCart, updateCart } from "../store/slices/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
 
+import { toast, ToastContainer } from "react-toastify"; 
+import 'react-toastify/dist/ReactToastify.css';
+
+
 const Products = (props) => {
   const { filters, sorting } = props;
   const { cart } = useSelector((state) => state.cart);
@@ -32,6 +36,12 @@ const Products = (props) => {
   };
 
   const addProductToCart = (product) => {
+
+    if (product.availabilityStatus === "Out of Stock") {
+      toast.error("This product is out of stock and cannot be added to the cart");
+      return;
+    }
+
     const existingProduct = cart.find((item) => item.id === product.id);
 
     if (existingProduct) {
@@ -54,6 +64,7 @@ const Products = (props) => {
 
   return (
     <div>
+      <ToastContainer />
     <div
         className="absolute top-0 left-0 w-full h-full"
         style={{
@@ -68,7 +79,9 @@ const Products = (props) => {
       {products?.map((product) => (
         <div key={product.id} className="product-card">
           <img src={product.thumbnail} alt={product.title} />
-          <h2 className="product-title">{product.title}</h2>
+          <div className={`availability-status ${product.availabilityStatus.toLowerCase().replace(/\s+/g, "-")}`}>
+            {product.availabilityStatus}
+          </div>
           <div className="rating">
             {renderStars(Math.round(product.rating))}
             <span style={{ paddingLeft: "4px", paddingRight: "4px" }}>

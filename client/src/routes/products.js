@@ -22,6 +22,10 @@ export const getProducts = async (filters, sortingId) => {
     }
   }
 
+  if (filters.availabilityStatus) {
+    url += `?availabilityStatus=${filters.availabilityStatus}`;
+  }
+
   const result = await fetch(url);
   const response = await result.json();
 
